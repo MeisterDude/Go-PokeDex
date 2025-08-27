@@ -6,15 +6,15 @@ import (
 )
 
 func commandMap(cfg *config, params *[]string) error {
-	locationsResp, err := cfg.pokeapiClient.ListLocations(cfg.nextLocationsURL)
+	location, err := cfg.pokeapiClient.ListLocations(cfg.nextLocationsURL)
 	if err != nil {
 		return err
 	}
 
-	cfg.nextLocationsURL = locationsResp.Next
-	cfg.prevLocationsURL = locationsResp.Previous
+	cfg.nextLocationsURL = location.Next
+	cfg.prevLocationsURL = location.Previous
 
-	for _, loc := range locationsResp.Results {
+	for _, loc := range location.Results {
 		fmt.Println(loc.Name)
 	}
 	return nil
@@ -25,15 +25,15 @@ func commandMapb(cfg *config, params *[]string) error {
 		return errors.New("you're on the first page")
 	}
 
-	locationResp, err := cfg.pokeapiClient.ListLocations(cfg.prevLocationsURL)
+	location, err := cfg.pokeapiClient.ListLocations(cfg.prevLocationsURL)
 	if err != nil {
 		return err
 	}
 
-	cfg.nextLocationsURL = locationResp.Next
-	cfg.prevLocationsURL = locationResp.Previous
+	cfg.nextLocationsURL = location.Next
+	cfg.prevLocationsURL = location.Previous
 
-	for _, loc := range locationResp.Results {
+	for _, loc := range location.Results {
 		fmt.Println(loc.Name)
 	}
 	return nil
